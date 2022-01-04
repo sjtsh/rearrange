@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
 
 import 'Beats/methods.dart';
-import 'Clustur/clustur_methods.dart';
+import 'Beats/clustur_methods.dart';
+import 'methods/readBeatLogFiles.dart';
+import 'methods/readClusturLogFiles.dart';
 
-List<Log> beatsLogs = [];
-List<String> clusturLogs = [];
-
+// List<Log> beatsLogs = [];
 class ChooseFolder extends StatefulWidget {
   const ChooseFolder({Key? key}) : super(key: key);
 
@@ -21,10 +21,10 @@ class _ChooseFolderState extends State<ChooseFolder> {
   bool disabled = true;
   bool isLoading = false;
 
+  List<String> _clusturPaths = [];
+
   @override
   Widget build(BuildContext context) {
-    List dirsWithFiles = [];
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: isLoading
@@ -52,10 +52,16 @@ class _ChooseFolderState extends State<ChooseFolder> {
                         ),
                         child: RawMaterialButton(
                           onPressed: () async {
-                            String? directoryPath = await FilePicker.platform.getDirectoryPath(
-                                dialogTitle: "Select the folder to rearrange");
+                            List<String> clusturPaths = [];
+                            List<String> beatPaths = [];
+
+                            String? directoryPath = await FilePicker.platform
+                                .getDirectoryPath(
+                                    dialogTitle:
+                                        "Select the folder to rearrange");
                             //_______________________________________________________
-                            var fm = FileManager(root: Directory(directoryPath!));
+                            var fm =
+                                FileManager(root: Directory(directoryPath!));
                             List<Directory> dirs = await fm.dirsTree();
                             for (var dir in dirs) {
                               bool condition = true;
@@ -76,21 +82,32 @@ class _ChooseFolderState extends State<ChooseFolder> {
                               if (files.isNotEmpty) {
                                 if (condition) {
                                   for (File element in files) {
-                                    readLogFiles(element.path, beatsLogs);
+                                    beatPaths.add(element.path);
                                   }
                                 } else {
                                   for (File element in files) {
-                                    clusturLogs.add(element.path);
+                                    clusturPaths.add(element.path);
                                   }
                                 }
                               }
                             }
-                            Future.delayed(const Duration(seconds: 1))
+                            setState(() {
+                              _clusturPaths = clusturPaths;
+                            });
+                            readBeatLogFiles(beatPaths: beatPaths)
                                 .then((value) {
-                              setState(() {
-                                disabled = false;
+                              readClusturedLogFiles(clusturPaths: clusturPaths)
+                                  .then((value) {
+                                setState(() {
+                                  disabled = false;
+                                });
                               });
                             });
+                            //     .then((value) {
+                            //   readClusturedLogFiles(clusturPaths: clusturPaths)
+                            //       .then((value) {
+                            //   });
+                            // });
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(
@@ -122,9 +139,9 @@ class _ChooseFolderState extends State<ChooseFolder> {
                               setState(() {
                                 isLoading = true;
                               });
-                              for (var element in clusturLogs) {
-                                readClusturedLogFiles(element, beatsLogs);
-                              }
+                              // for (var element in clusturLogs) {
+                              //   readClusturedLogFiles(element, beatsLogs);
+                              // }
 
                               Future.delayed(const Duration(seconds: 1))
                                   .then((value) {
