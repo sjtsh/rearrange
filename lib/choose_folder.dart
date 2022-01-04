@@ -53,21 +53,10 @@ class _ChooseFolderState extends State<ChooseFolder> {
                         ),
                         child: RawMaterialButton(
                           onPressed: () async {
-                            FilePicker.platform.getDirectoryPath(
-
-                            );
-                            String? path = await FilesystemPicker.open(
-                              title: 'Pick the folder with the Log Files',
-                              context: context,
-                              rootDirectory:
-                                  Directory("C:\\Users\\Lenovo\\Desktop"),
-                              fsType: FilesystemType.folder,
-                              folderIconColor: Colors.blueGrey,
-                              fileTileSelectMode: FileTileSelectMode.wholeTile,
-                            );
-
+                            String? directoryPath = await FilePicker.platform.getDirectoryPath(
+                                dialogTitle: "Select the folder to rearrange");
                             //_______________________________________________________
-                            var fm = FileManager(root: Directory(path!));
+                            var fm = FileManager(root: Directory(directoryPath!));
                             List<Directory> dirs = await fm.dirsTree();
                             for (var dir in dirs) {
                               bool condition = true;
