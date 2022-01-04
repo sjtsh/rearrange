@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
 
@@ -65,14 +66,6 @@ class _ChooseFolderState extends State<ChooseFolder> {
                               fileTileSelectMode: FileTileSelectMode.wholeTile,
                             );
 
-                            String? path = await FilesystemPicker.open(
-                              title: 'Pick the folder with images',
-                              context: context,
-                              rootDirectory: Directory("C:\\Users\\Lenovo\\Desktop"),
-                              fsType: FilesystemType.folder,
-                              folderIconColor: Colors.blueGrey,
-                              fileTileSelectMode: FileTileSelectMode.wholeTile,
-                            );
                             //_______________________________________________________
                             var fm = FileManager(root: Directory(path!));
                             List<Directory> dirs = await fm.dirsTree();
