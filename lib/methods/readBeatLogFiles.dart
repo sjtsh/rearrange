@@ -3,8 +3,9 @@ import 'dart:io';
 class BeatLog {
   final String folderPath;
   final String imagePath;
+  final String logPath;
 
-  BeatLog({required this.folderPath, required this.imagePath});
+  BeatLog({required this.folderPath, required this.imagePath, required this.logPath});
 }
 
 Future<List<BeatLog>> readBeatLogFiles(
@@ -20,8 +21,10 @@ Future<List<BeatLog>> readBeatLogFiles(
       String imagePath = "";
       try {
         for (int i = 0; i < words.length; i++) {
-          if (words[i] == "folder") {
+          if (words[i] == "folder" && words[i + 2] == "has") {
             folderPath = words[i + 1];
+          } else if (words[i] == "folder" && words[i + 3] == "has") {
+            folderPath = words[i + 1] + " " + words[i + 2];
           } else if (words[i] == "to" && words[i - 1] == "saved") {
             imagePath = words.sublist(i + 1, words.length).join(" ");
           }
@@ -33,7 +36,7 @@ Future<List<BeatLog>> readBeatLogFiles(
         beatLogs.add(BeatLog(
             folderPath:
                 folderPath.split("\\")[folderPath.split("\\").length - 1],
-            imagePath: imagePath));
+            imagePath: imagePath,logPath: beatPath));
       }
     }
     allBeatLogs.addAll(beatLogs.where((element) =>

@@ -2,11 +2,12 @@ import 'dart:io';
 
 class ClusturLog {
   final String imagePath;
+  final String logPath;
 
-  ClusturLog({required this.imagePath});
+  ClusturLog( {required this.imagePath,required this.logPath,});
 }
 
-Future<void> readClusturedLogFiles({
+Future<List<ClusturLog>> readClusturedLogFiles({
   required List<String> clusturPaths,
 }) async {
   List<ClusturLog> allClusturLogs = [];
@@ -27,9 +28,10 @@ Future<void> readClusturedLogFiles({
         print(e);
       }
       if (imagePath != "") {
-        clusturLogs.add(ClusturLog(imagePath: imagePath));
+        clusturLogs.add(ClusturLog(imagePath: imagePath, logPath: clusturPath));
       }
     }
     allClusturLogs.addAll(clusturLogs);
   }
+  return allClusturLogs;
 }

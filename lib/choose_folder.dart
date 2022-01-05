@@ -4,9 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
-
-import 'Beats/methods.dart';
-import 'Beats/clustur_methods.dart';
+import 'methods/compareBeatsToClustur.dart';
 import 'methods/readBeatLogFiles.dart';
 import 'methods/readClusturLogFiles.dart';
 
@@ -96,19 +94,20 @@ class _ChooseFolderState extends State<ChooseFolder> {
                               _clusturPaths = clusturPaths;
                             });
                             readBeatLogFiles(beatPaths: beatPaths)
-                                .then((value) {
+                                .then((beatLogs) {
                               readClusturedLogFiles(clusturPaths: clusturPaths)
-                                  .then((value) {
+                                  .then((clusturLogs) {
+                                print(beatLogs.length.toString() +
+                                    " " +
+                                    clusturLogs.length.toString());
                                 setState(() {
                                   disabled = false;
                                 });
+                                compareBeatsToClustur(
+                                    beatLogs: beatLogs,
+                                    clusturLogs: clusturLogs);
                               });
                             });
-                            //     .then((value) {
-                            //   readClusturedLogFiles(clusturPaths: clusturPaths)
-                            //       .then((value) {
-                            //   });
-                            // });
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(
