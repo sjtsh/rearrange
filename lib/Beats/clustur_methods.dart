@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:rearrange/Beats/methods.dart';
 
-readClusturedLogFiles(String filePath, List<Log> beatsLogs) async {
+processClusturedLogFiles(String filePath, List<Log> beatsLogs) async {
   String contents = await File(filePath).readAsString();
   List<ClusturLog> tempLogs = [];
   List<String> lines = contents.split("\n");
@@ -47,8 +47,9 @@ readClusturedLogFiles(String filePath, List<Log> beatsLogs) async {
             .create(recursive: true);
         File(toCopyFromPath).copy(toCopyPath).catchError((onError) {
           unsuccessful++;
-          print(toCopyFromPath);
-          print(toCopyPath + "\n");
+          print("unsuccessful: " + unsuccessful.toString());
+          // print(toCopyFromPath);
+          // print(toCopyPath + "\n");
         });
       }
     }

@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
 
 import 'Beats/methods.dart';
-import 'Clustur/clustur_methods.dart';
+import 'Beats/clustur_methods.dart';
+import 'methods/readBeatLogFiles.dart';
+import 'methods/readClusturLogFiles.dart';
 
-List<Log> beatsLogs = [];
-List<String> clusturLogs = [];
-
+// List<Log> beatsLogs = [];
 class ChooseFolder extends StatefulWidget {
   const ChooseFolder({Key? key}) : super(key: key);
 
@@ -24,274 +24,265 @@ class _ChooseFolderState extends State<ChooseFolder> {
   bool isLoading = false;
   bool isPicked = true;
 
+  List<String> _clusturPaths = [];
+
   @override
   Widget build(BuildContext context) {
-    List dirsWithFiles = [];
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Center(
-              child: Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+          : Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 2,
+                            offset: Offset(0, 2),
+                            spreadRadius: 2,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ListView(
                         children: [
-                          Expanded(child: Container()),
-                          Container(
-                            width: 600,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 2,
-                                  offset: Offset(0, 2),
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Text(
-                                    "Pick Folder",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                Divider(
-                                  height: 2,
-                                  color: Colors.grey,
-                                  thickness: 2,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
-                                  child: DottedBorder(
-                                    borderType: BorderType.RRect,
-                                    radius: Radius.circular(12),
-                                    color: Colors.red,
-                                    strokeWidth: 1,
-                                    dashPattern: [10, 6],
-                                    child: RawMaterialButton(
-                                      onPressed: () async {
-                                        String? directoryPath = await FilePicker
-                                            .platform
-                                            .getDirectoryPath(
-                                                dialogTitle:
-                                                    "Select the folder to rearrange");
-                                        //_______________________________________________________
-                                        var fm = FileManager(
-                                            root: Directory(directoryPath!));
-                                        List<Directory> dirs =
-                                            await fm.dirsTree();
-                                        for (var dir in dirs) {
-                                          bool condition = true;
-                                          List<File> files = await FileManager(
-                                                  root: Directory(dir.path))
-                                              .filesTree(
-                                            excludedPaths: [],
-                                            extensions: ["txt"],
-                                          );
-                                          for (int i = 0;
-                                              i < dir.path.split("\\").length;
-                                              i++) {
-                                            if (dir.path.split("\\")[i] ==
-                                                "Clustered Image") {
-                                              condition = false;
-                                            }
-                                          }
-                                          if (files.isNotEmpty) {
-                                            if (condition) {
-                                              for (File element in files) {
-                                                readLogFiles(
-                                                    element.path, beatsLogs);
-                                              }
-                                            } else {
-                                              for (File element in files) {
-                                                clusturLogs.add(element.path);
-                                              }
-                                            }
-                                          }
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Container(
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: RawMaterialButton(
+                                onPressed: () async {
+                                  List<String> clusturPaths = [];
+                                  List<String> beatPaths = [];
+
+                                  String? directoryPath = await FilePicker
+                                      .platform
+                                      .getDirectoryPath(
+                                          dialogTitle:
+                                              "Select the folder to rearrange");
+                                  //_______________________________________________________
+                                  var fm = FileManager(
+                                      root: Directory(directoryPath!));
+                                  List<Directory> dirs = await fm.dirsTree();
+                                  for (var dir in dirs) {
+                                    bool condition = true;
+                                    List<File> files = await FileManager(
+                                            root: Directory(dir.path))
+                                        .filesTree(
+                                      excludedPaths: [],
+                                      extensions: ["txt"],
+                                    );
+                                    for (int i = 0;
+                                        i < dir.path.split("\\").length;
+                                        i++) {
+                                      if (dir.path.split("\\")[i] ==
+                                          "Clustured Image") {
+                                        condition = false;
+                                      }
+                                    }
+                                    if (files.isNotEmpty) {
+                                      if (condition) {
+                                        for (File element in files) {
+                                          beatPaths.add(element.path);
                                         }
-                                        Future.delayed(
-                                                const Duration(seconds: 1))
-                                            .then((value) {
-                                          setState(() {
-                                            disabled = false;
-                                          });
-                                        });
-                                      },
-                                      child: Center(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.red),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Icon(
-                                                    Icons.upload_sharp,
-                                                    color: Colors.red,
-                                                  ),
-                                                )),
-                                            SizedBox(width: 10,),
-                                            Text(
-                                              "Pick Folder With Raw Images",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                      } else {
+                                        for (File element in files) {
+                                          clusturPaths.add(element.path);
+                                        }
+                                      }
+                                    }
+                                  }
+                                  setState(() {
+                                    _clusturPaths = clusturPaths;
+                                  });
+                                  print(_clusturPaths);
+                                  readBeatLogFiles(beatPaths: beatPaths)
+                                      .then((value) {
+                                    readClusturedLogFiles(
+                                            clusturPaths: clusturPaths)
+                                        .then((value) {
+                                      setState(() {
+                                        disabled = false;
+                                      });
+                                    });
+                                  });
+                                  //     .then((value) {
+                                  //   readClusturedLogFiles(clusturPaths: clusturPaths)
+                                  //       .then((value)q {
+                                  //   });
+                                  // });
+                                },
+                                child: DottedBorder(
+                                  padding: EdgeInsets.all(12),
+                                  borderType: BorderType.RRect,
+                                  radius: Radius.circular(12),
+                                  color: Colors.red,
+                                  strokeWidth: 1,
+                                  dashPattern: [10, 6],
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border:
+                                                Border.all(color: Colors.red),
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(5.0),
+                                            child: Icon(
+                                              Icons.upload_sharp,
+                                              color: Colors.red,
                                             ),
-                                          ],
+                                          )),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Add Folder With Raw Images",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                          Expanded(child: Container()),
-                          // Container(
-                          //   width: 150,
-                          //   height: 100,
-                          //   decoration: BoxDecoration(
-                          //     borderRadius: BorderRadius.circular(25),
-                          //     color: disabled ? Colors.blueGrey : Colors.blue,
-                          //   ),
-                          //   child: RawMaterialButton(
-                          //     onPressed: () {
-                          //       if (!disabled) {
-                          //         setState(() {
-                          //           isLoading = true;
-                          //         });
-                          //         for (var element in clusturLogs) {
-                          //           readClusturedLogFiles(element, beatsLogs);
-                          //         }
-                          //
-                          //         Future.delayed(const Duration(seconds: 1))
-                          //             .then((value) {
-                          //           setState(() {
-                          //             isLoading = false;
-                          //           });
-                          //         });
-                          //       }
-                          //     },
-                          //     child: const Padding(
-                          //       padding:
-                          //           EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
-                          //       child: Text(
-                          //         "Process",
-                          //         style: TextStyle(
-                          //           color: Colors.white,
-                          //           fontSize: 20,
-                          //           fontWeight: FontWeight.bold,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Divider(
+                            height: 2,
+                            color: Colors.grey.shade300,
+                            thickness: 2,
+                          ),
+                          Column(
+                            children: List.generate(
+                              _clusturPaths.length,
+                              (index) {
+                                return Builder(
+                                  builder: (context) {
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.grey.shade300,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.image),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              _clusturPaths[index]
+                                                  .split("/")
+                                                  .last,
+                                              overflow:
+                                                  TextOverflow.ellipsis,
+                                              textDirection:
+                                                  TextDirection.ltr,
+                                              textAlign: TextAlign.justify,
+                                              maxLines: 2,
+                                              style:
+                                                  TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _clusturPaths
+                                                    .removeAt(index);
+                                              });
+                                            },
+                                            icon: Container(
+                                              height: 20,
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.red),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.clear,
+                                                  size: 13,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    // SizedBox(
-                    //   width: 20,
-                    // ),
-                    // Expanded(
-                    //   child: Column(
-                    //     children: [
-                    //       Text("Selected Files"),
-                    //       SizedBox(
-                    //         height: 20,
-                    //       ),
-                    //       Column(children: [],),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.black.withOpacity(0.1),
-                    //         blurRadius: 2,
-                    //         offset: Offset(0, 2),
-                    //         spreadRadius: 2,
-                    //       ),
-                    //     ],
-                    //     borderRadius: BorderRadius.circular(25),
-                    //   ),
-                    //   child: ListView(
-                    //     children: [
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       "",
-                    //       ""
-                    //     ]
-                    //         .map(
-                    //           (e) => Column(
-                    //             children: [
-                    //               Container(
-                    //                 height: 60,
-                    //                 decoration: BoxDecoration(
-                    //                   borderRadius:
-                    //                       BorderRadius.circular(6),
-                    //                   color: Colors.white,
-                    //                   boxShadow: [
-                    //                     BoxShadow(
-                    //                         offset: Offset(0, 2),
-                    //                         blurRadius: 1,
-                    //                         spreadRadius: 1,
-                    //                         color: Colors.black
-                    //                             .withOpacity(0.1)),
-                    //                   ],
-                    //                 ),
-                    //                 child: Center(
-                    //                   child:
-                    //                       Text("hhjajkfjakjs.txt"),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(height: 20,),
-                    //             ],
-                    //           ),
-                    //         )
-                    //         .toList(),
-                    //   ),
-                    // ),
-                    //     ],
-                    //   ),
-                    // ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    clipBehavior: Clip.hardEdge,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 2,
+                          offset: Offset(0, 2),
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      clipBehavior: Clip.hardEdge,
+                      color: Colors.green,
+                      child: InkWell(
+                        onTap: (){
+
+                        },
+                        child: Center(
+                          child: disabled ? const CircularProgressIndicator(color: Colors.white) : const Text(
+                            "PROCESS",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
     );
