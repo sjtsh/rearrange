@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
+import 'package:rearrange/LogFiles.dart';
 import 'methods/compareBeatsToClustur.dart';
 import 'methods/readBeatLogFiles.dart';
 import 'methods/readClusturLogFiles.dart';
@@ -25,7 +26,6 @@ class _ChooseFolderState extends State<ChooseFolder> {
   List<String> clusturPaths = [];
   List<String> beatPaths = [];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +38,7 @@ class _ChooseFolderState extends State<ChooseFolder> {
                 children: [
                   Expanded(
                     child: Container(
+                      clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -50,7 +51,7 @@ class _ChooseFolderState extends State<ChooseFolder> {
                         ],
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: ListView(
+                      child: Column(
                         children: [
                           SizedBox(
                             height: 20,
@@ -102,6 +103,7 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                       }
                                     }
                                   }
+                                  setState(() {});
                                 },
                                 child: DottedBorder(
                                   padding: EdgeInsets.all(12),
@@ -109,7 +111,7 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                   radius: Radius.circular(12),
                                   color: Colors.red,
                                   strokeWidth: 1,
-                                  dashPattern: [10, 6],
+                                  dashPattern: [8, 6],
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -151,73 +153,249 @@ class _ChooseFolderState extends State<ChooseFolder> {
                             color: Colors.grey.shade300,
                             thickness: 2,
                           ),
-                          Column(
-                            children: List.generate(
-                              clusturPaths.length,
-                              (index) {
-                                return Builder(
-                                  builder: (context) {
-                                    return Container(
-                                      alignment: Alignment.center,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: Colors.grey.shade300,
-                                          ),
-                                        ),
-                                      ),
+                          clusturPaths.length == 0 && beatPaths.length == 0
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10.0,
+                                          left: 20.0,
+                                          right: 20.0,
+                                          bottom: 10.0),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.image),
+                                          Expanded(
+                                            child: beatPaths.length == 0
+                                                ? Container()
+                                                : Row(
+                                                    children: [
+                                                      Container(
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          color: Colors
+                                                              .grey.shade100,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                              blurRadius: 1,
+                                                              offset:
+                                                                  Offset(0, 1),
+                                                              spreadRadius: 1,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Center(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              "Number of logs available: ${beatPaths.length}",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .grey),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                          child: Container()),
+                                                      Container(
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          color: Colors
+                                                              .grey.shade100,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                              blurRadius: 1,
+                                                              offset:
+                                                                  Offset(0, 1),
+                                                              spreadRadius: 1,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              beatPaths = [];
+                                                            });
+                                                          },
+                                                          child: const Center(
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                "CLEAR ALL",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                          ),
                                           SizedBox(
-                                            width: 20,
+                                            width: 40,
                                           ),
                                           Expanded(
-                                            child: Text(
-                                              clusturPaths[index]
-                                                  .split("/")
-                                                  .last,
-                                              overflow: TextOverflow.ellipsis,
-                                              textDirection: TextDirection.ltr,
-                                              textAlign: TextAlign.justify,
-                                              maxLines: 2,
-                                              style: TextStyle(fontSize: 12),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                clusturPaths.removeAt(index);
-                                              });
-                                            },
-                                            icon: Container(
-                                              height: 20,
-                                              width: 20,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.red),
-                                              child: Center(
-                                                child: Icon(
-                                                  Icons.clear,
-                                                  size: 13,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
+                                            child: clusturPaths.length == 0
+                                                ? Container()
+                                                : Row(
+                                                    children: [
+                                                      Container(
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          color: Colors
+                                                              .grey.shade100,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                              blurRadius: 1,
+                                                              offset:
+                                                                  Offset(0, 1),
+                                                              spreadRadius: 1,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Center(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              "Number of logs available: ${clusturPaths.length}",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .grey),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                          child: Container()),
+                                                      Container(
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          color: Colors
+                                                              .grey.shade100,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                              blurRadius: 1,
+                                                              offset:
+                                                                  Offset(0, 1),
+                                                              spreadRadius: 1,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              clusturPaths = [];
+                                                            });
+                                                          },
+                                                          child: const Center(
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                "CLEAR ALL",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                           ),
                                         ],
                                       ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                                    ),
+                                    Divider(
+                                      height: 2,
+                                      color: Colors.grey.shade300,
+                                      thickness: 2,
+                                    ),
+                                  ],
+                                ),
+                          clusturPaths.length == 0 && beatPaths.length == 0
+                              ? Expanded(
+                                  child: Center(
+                                    child: Text("No Files Found"),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: ListView(
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          beatPaths.length == 0
+                                              ? Expanded(
+                                              child: Text(
+                                                  "No beat logs found"))
+                                              : LogFiles(
+                                              beatPaths, "Beat Logs"),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          clusturPaths.length == 0
+                                              ? Expanded(
+                                              child: Center(
+                                                  child: Text(
+                                                      "No cluster logs found")))
+                                              : LogFiles(
+                                              clusturPaths, "Cluster Logs"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          SizedBox(
+                            height: 10,
                           ),
                         ],
                       ),
