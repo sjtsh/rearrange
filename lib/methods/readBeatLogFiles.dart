@@ -39,8 +39,7 @@ Future<List<BeatLog>> readBeatLogFiles(
             imagePath: imagePath,logPath: beatPath));
       }
     }
-    allBeatLogs.addAll(beatLogs.where((element) =>
-        element.imagePath.split("\\").contains("Clustured Image")));
+    allBeatLogs.addAll(beatLogs);
   }
   return allBeatLogs;
 }

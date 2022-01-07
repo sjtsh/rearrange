@@ -33,7 +33,11 @@ dependencies:
   excel: ^1.1.5
   file_picker:
   filesystem_picker:
+  video_player: ^2.2.10
+  flutter_ffmpeg: ^0.4.2
   dotted_border:
+  flutter_video_info:
+  flutter_vlc_player:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

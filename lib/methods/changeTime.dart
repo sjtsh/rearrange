@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:video_player/video_player.dart';
 
 String changeTimeBack({required String input, required String folderName}) {
+// VideoPlayerController.file('file').
   int sec, hr, min, addSec, addHr, addMin;
-
+  // FileStat fileStat = FileStat.stat('file');
+  // fileStat.changed
   String hrString, minString, secString;
   String change = input.substring(0, 8);
   hr = int.parse(change.substring(0, 2));
@@ -16,48 +21,33 @@ String changeTimeBack({required String input, required String folderName}) {
   addMin = int.parse(string.substring(string.length - 5, string.length - 3));
   addSec = int.parse(string.substring(string.length - 2, string.length));
 
-  if ((sec - addSec) > 0) {
-    sec -= addSec;
-  } else {
-    sec -= addSec;
-    sec += 60;
-    min -= 1;
-  }
+  DateTime dateTime = DateTime(2021, 1, 1, hr, min, sec)
+      .subtract(Duration(hours: addHr, minutes: addMin, seconds: addSec));
 
-  if ((min - addMin) > 0) {
-    min -= addMin;
-  } else {
-    min -= addMin;
-    min += 60;
-    hr -= 1;
-  }
-
-  hr -= addHr;
-  if (hr == 0) {
+  if (dateTime.hour == 0) {
     hrString = "00";
-  } else if (hr < 10) {
-    hrString = "0$hr";
+  } else if (dateTime.hour < 10) {
+    hrString = "0${dateTime.hour}";
   } else {
-    hrString = "$hr";
+    hrString = "${dateTime.hour}";
   }
 
-  if (min == 0) {
+  if (dateTime.minute == 0) {
     minString = "00";
-  } else if (min < 10) {
-    minString = "0$min";
+  } else if (dateTime.minute < 10) {
+    minString = "0${dateTime.minute}";
   } else {
-    minString = "$min";
+    minString = "${dateTime.minute}";
   }
 
-  if (sec == 0) {
+  if (dateTime.second == 0) {
     secString = "00";
-  } else if (sec < 10) {
-    secString = "0$sec";
+  } else if (dateTime.second < 10) {
+    secString = "0${dateTime.second}";
   } else {
-    secString = "$sec";
+    secString = "${dateTime.second}";
   }
 
   String output = "${hrString}_${minString}_$secString" + input.substring(8);
-  print("from \n$input\n to \n$output");
   return output;
 }

@@ -24,7 +24,7 @@ class _ChooseFolderState extends State<ChooseFolder> {
 
   List<String> clusturPaths = [];
   List<String> beatPaths = [];
-
+  String buttonText = "Process";
 
   @override
   Widget build(BuildContext context) {
@@ -75,13 +75,13 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                       root: Directory(directoryPath!));
                                   List<Directory> dirs = await fm.dirsTree();
                                   for (var dir in dirs) {
-                                    bool condition = true;
                                     List<File> files = await FileManager(
                                             root: Directory(dir.path))
                                         .filesTree(
                                       excludedPaths: [],
                                       extensions: ["txt"],
                                     );
+                                    bool condition = true;
                                     for (int i = 0;
                                         i < dir.path.split("\\").length;
                                         i++) {
@@ -93,15 +93,23 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                     if (files.isNotEmpty) {
                                       if (condition) {
                                         for (File element in files) {
-                                          beatPaths.add(element.path);
+                                          if (!beatPaths
+                                              .contains(element.path)) {
+                                            beatPaths.add(element.path.replaceAll("(Offset/Flex)", "(Offset and Flex)"));
+                                          }
                                         }
                                       } else {
                                         for (File element in files) {
-                                          clusturPaths.add(element.path);
+                                          if (!clusturPaths
+                                              .contains(element.path)) {
+                                            clusturPaths.add(element.path);
+                                          }
                                         }
                                       }
                                     }
                                   }
+                                  setState(() {});
+                                  print(beatPaths.length.toString() + " " + clusturPaths.length.toString());
                                 },
                                 child: DottedBorder(
                                   padding: EdgeInsets.all(12),
@@ -235,7 +243,7 @@ class _ChooseFolderState extends State<ChooseFolder> {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
                           blurRadius: 2,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                           spreadRadius: 2,
                         ),
                       ],
@@ -245,35 +253,33 @@ class _ChooseFolderState extends State<ChooseFolder> {
                       color: Colors.green,
                       child: InkWell(
                         onTap: () {
-                          readBeatLogFiles(beatPaths: beatPaths)
-                              .then((beatLogs) {
-                            readClusturedLogFiles(clusturPaths: clusturPaths)
-                                .then((clusturLogs) {
-                              print(beatLogs.length.toString() +
-                                  " " +
-                                  clusturLogs.length.toString());
-                              setState(() {
-                                disabled = false;
-                              });
-                              compareBeatsToClustur(
-                                  beatLogs: beatLogs, clusturLogs: clusturLogs);
+                          if (!disabled) {
+                            setState(() {
+                              disabled = true;
                             });
-                          });
-                          readBeatLogFiles(beatPaths: beatPaths).then((value) {
-                            readClusturedLogFiles(clusturPaths: clusturPaths)
-                                .then((value) {
-                              setState(() {
-                                disabled = false;
+                            readBeatLogFiles(beatPaths: beatPaths)
+                                .then((beatLogs) {
+                              readClusturedLogFiles(clusturPaths: clusturPaths)
+                                  .then((clusturLogs) {
+                                compareBeatsToClustur(
+                                        beatLogs: beatLogs,
+                                        clusturLogs: clusturLogs)
+                                    .then((value) {
+                                  buttonText = value;
+                                  setState(() {
+                                    disabled = false;
+                                  });
+                                });
                               });
                             });
-                          });
+                          }
                         },
                         child: Center(
                           child: disabled
                               ? const CircularProgressIndicator(
                                   color: Colors.white)
-                              : const Text(
-                                  "PROCESS",
+                              : Text(
+                                  buttonText,
                                   style: TextStyle(
                                       fontSize: 20, color: Colors.white),
                                 ),
