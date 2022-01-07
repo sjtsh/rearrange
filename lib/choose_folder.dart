@@ -13,6 +13,7 @@ import 'methods/readClusturLogFiles.dart';
 
 // List<Log> beatsLogs = [];
 class ChooseFolder extends StatefulWidget {
+
   @override
   State<ChooseFolder> createState() => _ChooseFolderState();
 }
@@ -498,7 +499,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                     compareBeatsToClustur(
                                         beatLogs: beatLogs,
                                         clusturLogs: clusturLogs,
-                                        addConsole: addConsole);
+                                        addConsole: addConsole
+                                    );
                                   });
                                 });
                                 readBeatLogFiles(beatPaths: beatPaths)
@@ -534,8 +536,7 @@ class _ChooseFolderState extends State<ChooseFolder> {
                   ],
                 ),
                 isConsoleShown
-                    ? Positioned(
-                        bottom: 80, right: 2, child: ConsoleScreen(conSoleData))
+                    ? Positioned(bottom: 80, right: 2, child: ConsoleScreen(conSoleData))
                     : Container()
               ]),
             ),
