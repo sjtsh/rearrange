@@ -8,6 +8,7 @@ import 'changeTime.dart';
 compareBeatsToClustur({
   required List<BeatLog> beatLogs,
   required List<ClusturLog> clusturLogs,
+  required Function addConsole,
 }) async {
   //beatLog.imagePath = C:\Users\Lenovo\Desktop\BATTISPUTALI\3\L\Categories\Clustured Image\01_18_422021-08-29-22h46m01s368.jpg
   //beatLog.folderPath = 04_20_2021
@@ -65,7 +66,11 @@ compareBeatsToClustur({
                 .catchError((onError) {
               counter--;
               unsuccessful++;
-              print("failed $unsuccessful with $toSave and $saveFrom with $onError");
+              String conData =
+                  "failed $unsuccessful with $toSave and $saveFrom with $onError"; // added
+              print(
+                  "failed $unsuccessful with $toSave and $saveFrom with $onError");
+              addConsole(conData);
             });
           });
         } else {
@@ -76,4 +81,6 @@ compareBeatsToClustur({
     }
   }
   print("$counter were successful and $unsuccessful were unsuccessful");
+  String successInfo= "$counter were successful and $unsuccessful were unsuccessful";
+  addConsole(successInfo);
 }
