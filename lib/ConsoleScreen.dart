@@ -23,10 +23,11 @@ class _ConsoleScreenState extends State<ConsoleScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return Container(
-      height: height * 0.75,
+      height: height,
       width: width * 0.25,
       decoration: (BoxDecoration(
           color: Colors.black.withOpacity(0.8),
+          border: Border.all(),
           borderRadius: BorderRadius.circular(16))),
       child: ListView.builder(
           controller: _scrollController,

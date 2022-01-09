@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
 import 'package:rearrange/ConsoleScreen.dart';
@@ -43,9 +42,11 @@ class _ChooseFolderState extends State<ChooseFolder> {
               padding: const EdgeInsets.all(20.0),
               child: Stack(children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Container(
+                        width: isConsoleShown==true ?MediaQuery.of(context).size.width*0.72 :MediaQuery.of(context).size.width,
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
                           color: Colors.white,
