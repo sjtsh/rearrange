@@ -24,11 +24,10 @@ class _ConsoleScreenState extends State<ConsoleScreen> {
 
     return Container(
       height: height,
-      width: width * 0.25,
+      width: width * 0.24,
       decoration: (BoxDecoration(
           color: Colors.black.withOpacity(0.8),
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(16))),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16), topLeft: Radius.circular(16)))),
       child: ListView.builder(
           controller: _scrollController,
           itemCount: widget.consoleData.length,
