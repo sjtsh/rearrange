@@ -12,7 +12,6 @@ import 'methods/readClusturLogFiles.dart';
 
 // List<Log> beatsLogs = [];
 class ChooseFolder extends StatefulWidget {
-
   @override
   State<ChooseFolder> createState() => _ChooseFolderState();
 }
@@ -48,7 +47,9 @@ class _ChooseFolderState extends State<ChooseFolder> {
                       children: [
                         Expanded(
                           child: Container(
-                            width: isConsoleShown==true ?MediaQuery.of(context).size.width*0.72 :MediaQuery.of(context).size.width,
+                            width: isConsoleShown == true
+                                ? MediaQuery.of(context).size.width * 0.72
+                                : MediaQuery.of(context).size.width,
                             clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -68,8 +69,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                   height: 20,
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0),
                                   child: Container(
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
@@ -85,7 +86,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                         //_______________________________________________________
                                         var fm = FileManager(
                                             root: Directory(directoryPath!));
-                                        List<Directory> dirs = await fm.dirsTree();
+                                        List<Directory> dirs =
+                                            await fm.dirsTree();
                                         for (var dir in dirs) {
                                           bool condition = true;
                                           List<File> files = await FileManager(
@@ -130,8 +132,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                             Container(
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  border:
-                                                      Border.all(color: Colors.red),
+                                                  border: Border.all(
+                                                      color: Colors.red),
                                                 ),
                                                 child: const Padding(
                                                   padding: EdgeInsets.all(5.0),
@@ -165,7 +167,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                   color: Colors.grey.shade300,
                                   thickness: 2,
                                 ),
-                                clusturPaths.length == 0 && beatPaths.length == 0
+                                clusturPaths.length == 0 &&
+                                        beatPaths.length == 0
                                     ? Container()
                                     : Column(
                                         children: [
@@ -192,17 +195,22 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                                                         .circular(
                                                                             12),
                                                                 color: Colors
-                                                                    .grey.shade100,
+                                                                    .grey
+                                                                    .shade100,
                                                                 boxShadow: [
                                                                   BoxShadow(
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
                                                                             0.1),
-                                                                    blurRadius: 1,
-                                                                    offset: Offset(
-                                                                        0, 1),
-                                                                    spreadRadius: 1,
+                                                                    blurRadius:
+                                                                        1,
+                                                                    offset:
+                                                                        Offset(
+                                                                            0,
+                                                                            1),
+                                                                    spreadRadius:
+                                                                        1,
                                                                   ),
                                                                 ],
                                                               ),
@@ -210,7 +218,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                                                 child: Padding(
                                                                   padding:
                                                                       const EdgeInsets
-                                                                          .all(8.0),
+                                                                              .all(
+                                                                          8.0),
                                                                   child: Text(
                                                                     "Number of logs available: ${beatPaths.length}",
                                                                     style: TextStyle(
@@ -221,7 +230,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                                               ),
                                                             ),
                                                             Expanded(
-                                                                child: Container()),
+                                                                child:
+                                                                    Container()),
                                                             Container(
                                                               clipBehavior:
                                                                   Clip.hardEdge,
@@ -232,37 +242,44 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                                                         .circular(
                                                                             12),
                                                                 color: Colors
-                                                                    .grey.shade100,
+                                                                    .grey
+                                                                    .shade100,
                                                                 boxShadow: [
                                                                   BoxShadow(
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
                                                                             0.1),
-                                                                    blurRadius: 1,
-                                                                    offset: Offset(
-                                                                        0, 1),
-                                                                    spreadRadius: 1,
+                                                                    blurRadius:
+                                                                        1,
+                                                                    offset:
+                                                                        Offset(
+                                                                            0,
+                                                                            1),
+                                                                    spreadRadius:
+                                                                        1,
                                                                   ),
                                                                 ],
                                                               ),
                                                               child: InkWell(
                                                                 onTap: () {
                                                                   setState(() {
-                                                                    beatPaths = [];
+                                                                    beatPaths =
+                                                                        [];
                                                                   });
                                                                 },
-                                                                child: const Center(
-                                                                  child: Padding(
+                                                                child:
+                                                                    const Center(
+                                                                  child:
+                                                                      Padding(
                                                                     padding:
-                                                                        EdgeInsets
-                                                                            .all(
-                                                                                8.0),
+                                                                        EdgeInsets.all(
+                                                                            8.0),
                                                                     child: Text(
                                                                       "CLEAR ALL",
                                                                       style: TextStyle(
-                                                                          color: Colors
-                                                                              .red),
+                                                                          color:
+                                                                              Colors.red),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -275,99 +292,109 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                                   width: 40,
                                                 ),
                                                 Expanded(
-                                                  child: clusturPaths.length == 0
-                                                      ? Container()
-                                                      : Row(
-                                                          children: [
-                                                            Container(
-                                                              clipBehavior:
-                                                                  Clip.hardEdge,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
+                                                  child:
+                                                      clusturPaths.length == 0
+                                                          ? Container()
+                                                          : Row(
+                                                              children: [
+                                                                Container(
+                                                                  clipBehavior:
+                                                                      Clip.hardEdge,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
                                                                             12),
-                                                                color: Colors
-                                                                    .grey.shade100,
-                                                                boxShadow: [
-                                                                  BoxShadow(
                                                                     color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            0.1),
-                                                                    blurRadius: 1,
-                                                                    offset: Offset(
-                                                                        0, 1),
-                                                                    spreadRadius: 1,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              child: Center(
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(8.0),
-                                                                  child: Text(
-                                                                    "Number of logs available: ${clusturPaths.length}",
-                                                                    style: TextStyle(
+                                                                        .grey
+                                                                        .shade100,
+                                                                    boxShadow: [
+                                                                      BoxShadow(
                                                                         color: Colors
-                                                                            .grey),
+                                                                            .black
+                                                                            .withOpacity(0.1),
+                                                                        blurRadius:
+                                                                            1,
+                                                                        offset: Offset(
+                                                                            0,
+                                                                            1),
+                                                                        spreadRadius:
+                                                                            1,
+                                                                      ),
+                                                                    ],
                                                                   ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                                child: Container()),
-                                                            Container(
-                                                              clipBehavior:
-                                                                  Clip.hardEdge,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12),
-                                                                color: Colors
-                                                                    .grey.shade100,
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            0.1),
-                                                                    blurRadius: 1,
-                                                                    offset: Offset(
-                                                                        0, 1),
-                                                                    spreadRadius: 1,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    clusturPaths =
-                                                                        [];
-                                                                  });
-                                                                },
-                                                                child: const Center(
-                                                                  child: Padding(
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .all(
-                                                                                8.0),
-                                                                    child: Text(
-                                                                      "CLEAR ALL",
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .red),
+                                                                  child: Center(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Text(
+                                                                        "Number of logs available: ${clusturPaths.length}",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.grey),
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
+                                                                Expanded(
+                                                                    child:
+                                                                        Container()),
+                                                                Container(
+                                                                  clipBehavior:
+                                                                      Clip.hardEdge,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            12),
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade100,
+                                                                    boxShadow: [
+                                                                      BoxShadow(
+                                                                        color: Colors
+                                                                            .black
+                                                                            .withOpacity(0.1),
+                                                                        blurRadius:
+                                                                            1,
+                                                                        offset: Offset(
+                                                                            0,
+                                                                            1),
+                                                                        spreadRadius:
+                                                                            1,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        clusturPaths =
+                                                                            [];
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                        const Center(
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            EdgeInsets.all(8.0),
+                                                                        child:
+                                                                            Text(
+                                                                          "CLEAR ALL",
+                                                                          style:
+                                                                              TextStyle(color: Colors.red),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
                                                 ),
                                               ],
                                             ),
@@ -379,7 +406,8 @@ class _ChooseFolderState extends State<ChooseFolder> {
                                           ),
                                         ],
                                       ),
-                                clusturPaths.length == 0 && beatPaths.length == 0
+                                clusturPaths.length == 0 &&
+                                        beatPaths.length == 0
                                     ? Expanded(
                                         child: Center(
                                           child: Text("No Files Found"),
@@ -423,89 +451,79 @@ class _ChooseFolderState extends State<ChooseFolder> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          children: [
-
-                            Padding(
-                              padding: const EdgeInsets.only(right: 0.0),
-                              child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 2,
-                                      offset: Offset(0, 2),
-                                      spreadRadius: 2,
-                                    ),
-                                  ],
-                                ),
-                                child: Material(
-                                  clipBehavior: Clip.hardEdge,
-                                  color: Colors.green,
-                                  child: InkWell(
-                                    onTap: () {
-                                      readBeatLogFiles(beatPaths: beatPaths)
-                                          .then((beatLogs) {
-                                        readClusturedLogFiles(
-                                                clusturPaths: clusturPaths)
-                                            .then((clusturLogs) {
-                                          print(beatLogs.length.toString() +
-                                              " " +
-                                              clusturLogs.length.toString());
-                                          setState(() {
-                                            disabled = false;
-                                          });
-                                          compareBeatsToClustur(
-                                              beatLogs: beatLogs,
-                                              clusturLogs: clusturLogs,
-                                              addConsole: addConsole
-                                          );
-                                        });
-                                      });
-                                      readBeatLogFiles(beatPaths: beatPaths)
-                                          .then((value) {
-                                        readClusturedLogFiles(
-                                                clusturPaths: clusturPaths)
-                                            .then((value) {
-                                          setState(() {
-                                            disabled = false;
-                                          });
-                                        });
-                                      });
-                                    },
-                                    child: Center(
-                                      child: disabled
-                                          ? const CircularProgressIndicator(
-                                              color: Colors.white)
-                                          : Padding(
-                                              padding: const EdgeInsets.all(12.0),
-                                              child: const Text(
-                                                "PROCESS",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                    ),
-                                  ),
-                                ),
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: Material(
+                            clipBehavior: Clip.hardEdge,
+                            color: Colors.green,
+                            child: InkWell(
+                              onTap: () {
+                                readBeatLogFiles(beatPaths: beatPaths)
+                                    .then((beatLogs) {
+                                  readClusturedLogFiles(
+                                          clusturPaths: clusturPaths)
+                                      .then((clusturLogs) {
+                                    print(beatLogs.length.toString() +
+                                        " " +
+                                        clusturLogs.length.toString());
+                                    setState(() {
+                                      disabled = false;
+                                    });
+                                    compareBeatsToClustur(
+                                        beatLogs: beatLogs,
+                                        clusturLogs: clusturLogs,
+                                        addConsole: addConsole);
+                                  });
+                                });
+                                readBeatLogFiles(beatPaths: beatPaths)
+                                    .then((value) {
+                                  readClusturedLogFiles(
+                                          clusturPaths: clusturPaths)
+                                      .then((value) {
+                                    setState(() {
+                                      disabled = false;
+                                    });
+                                  });
+                                });
+                              },
+                              child: Center(
+                                child: disabled
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white)
+                                    : Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: const Text(
+                                          "PROCESS",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                      ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-
-                  isConsoleShown
-                      ? ConsoleScreen(conSoleData)
-                      : Container(),
-
+                  SizedBox(
+                    width: 20,
+                  ),
+                  isConsoleShown ? ConsoleScreen(conSoleData) : Container(),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         isConsoleShown = !isConsoleShown;
                       });
@@ -514,15 +532,23 @@ class _ChooseFolderState extends State<ChooseFolder> {
                       quarterTurns: 1,
                       child: Container(
                         width: MediaQuery.of(context).size.width,
-                       decoration: BoxDecoration(
-                         color: Colors.black,
-                         borderRadius:isConsoleShown? BorderRadius.circular(0): BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight:  Radius.circular(16))
-                       ),
-                       child:
-                        Padding(
-                          padding: const EdgeInsets.only(top:3, bottom: 3, left: 12, right: 12),
-                          child: Center(child: Text("Console",style: TextStyle(color: Colors.white),)),
-                        ),),
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: isConsoleShown
+                                ? BorderRadius.circular(0)
+                                : BorderRadius.only(
+                                    bottomLeft: Radius.circular(16),
+                                    bottomRight: Radius.circular(16))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 3, bottom: 3, left: 12, right: 12),
+                          child: Center(
+                              child: Text(
+                            "Console",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                        ),
+                      ),
                     ),
                   )
                 ],
